@@ -1,26 +1,24 @@
-<script lang="ts"> 
+<script lang="ts">
     let isMenuOpen = false;
 </script>
 
 <style>
     /* Navbar styling */
-   .navbar {
+    .navbar {
         background-color: #D20F32;
         padding: 1.5rem 2.5rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        position: relative; /* Allows dropdown to appear below */
+        position: relative;
     }
 
-    /* Brand styling */
     .brand {
         color: white;
         font-size: 1.5rem;
         font-weight: bold;
     }
 
-    /* Hamburger button styling */
     .hamburger {
         display: none;
         flex-direction: column;
@@ -35,7 +33,6 @@
         transition: 0.3s;
     }
 
-    /* Menu items styling */
     .menu {
         display: flex;
         gap: 2rem;
@@ -52,49 +49,50 @@
         color: #CCCCCC;
     }
 
-    
-
-
-
     /* Responsive styles */
     @media (max-width: 768px) {
         .menu {
-            display: none; /* Hidden by default on mobile */
+            display: none;
             flex-direction: column;
             gap: 2rem;
-            position: absolute; /* Positions menu below navbar */
-            top: 100%; /* Moves it directly below the navbar */
+            position: absolute;
+            top: 100%;
             left: 0;
             width: 100%;
-            background-color: #D20F32; /* Matches navbar color */
+            background-color: #D20F32;
             padding: 2rem 2rem;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adds a slight shadow */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 10;
             text-align: center;
         }
 
         .menu.open {
-            display: flex; /* Show menu when open */
+            display: flex;
         }
 
         .hamburger {
-            display: flex; /* Show hamburger on mobile */
+            display: flex;
         }
     }
 </style>
 
 <div class="navbar">
-    <!-- Brand Logo -->
     <div class="brand">
-        <a href="/" >ResQ</a>
+        <a href="/">ResQ</a>
     </div>
 
-    <!-- Hamburger Icon (visible on mobile) -->
-    <div class="hamburger" on:click={() => (isMenuOpen = !isMenuOpen)}>
+    <!-- Hamburger Icon (now accessible) -->
+    <button 
+        class="hamburger" 
+        on:click={() => (isMenuOpen = !isMenuOpen)} 
+        on:keydown={(e) => e.key === 'Enter' && (isMenuOpen = !isMenuOpen)}
+        aria-expanded={isMenuOpen}
+        aria-label="Toggle menu">
+        
         <div></div>
         <div></div>
         <div></div>
-    </div>
+    </button>
 
     <!-- Navigation Menu -->
     <div class={`menu ${isMenuOpen ? 'open' : ''}`}>
@@ -103,4 +101,3 @@
         <a href="/contact" class="menu-item">Contact</a>
     </div>
 </div>
-
