@@ -1,18 +1,32 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-static'; // Import the adapter
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://svelte.dev/docs/kit/integrations
-	// for more information about preprocessors
-	preprocess: vitePreprocess(),
-
-	kit: {
-		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter({ pages: "build", assets: "build", fallback: undefined, precompress: false, strict: true }),
-	}
+  preprocess: vitePreprocess(),
+  kit: {
+    adapter: adapter({
+      pages: 'build',
+      assets: 'build',
+      fallback: null, // Adjust this if needed
+      precompress: false,
+      strict: true
+    }),
+    paths: {
+      base: process.env.NODE_ENV === 'production' ? '/project2' : ''
+    },
+    prerender: {
+      handleMissingId: 'ignore', // Ignore errors for missing IDs (you can also use 'warn' or 'error')
+      handleHttpError: ({ status, path, referrer, referenceType }) => {
+        if (status === 404) {
+          // Ignore 404 errors on specific routes
+          return;
+        }
+        // Throw an error for other statuses
+        throw new Error(`Status: ${status}, Path: ${path}`);
+      }
+    }
+  }
 };
 
 export default config;
